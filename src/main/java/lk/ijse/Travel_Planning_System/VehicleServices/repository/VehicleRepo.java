@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @EnableJpaRepositories
 @Repository
 public interface VehicleRepo extends JpaRepository<Vehicle, Integer> {
+    Vehicle save(Vehicle vehicle);
 }
