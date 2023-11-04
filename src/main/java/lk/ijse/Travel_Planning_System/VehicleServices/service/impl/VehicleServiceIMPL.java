@@ -31,7 +31,6 @@ public class VehicleServiceIMPL implements VehicleService {
 
     @Override
     public VehicleDTO saveVehicle(VehicleDTO vehicle) {
-        if (vehicleRepo.existsById(vehicle.getVehicleId())) throw new InvalidException("Already Exist Vehicle");
         return dataTypeConversion.getVehicleDTO(vehicleRepo.save(dataTypeConversion.getVehicleEntity(vehicle)));
     }
 

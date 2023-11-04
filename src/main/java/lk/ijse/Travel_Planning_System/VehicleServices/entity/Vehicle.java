@@ -42,24 +42,24 @@ public class Vehicle implements SuperEntity{
     private String remark;
     @Lob
     @Column(columnDefinition = "LONGBLOB")
-    private String side_img;
+    private byte[] side_img;
     @Lob
     @Column(columnDefinition = "LONGBLOB")
-    private String front_img;
+    private byte[] front_img;
     @Lob
     @Column(columnDefinition = "LONGBLOB")
-    private String back_img;
+    private byte[] back_img;
     @Lob
     @Column(columnDefinition = "LONGBLOB")
-    private String front_interior;
+    private byte[] front_interior;
     @Lob
     @Column(columnDefinition = "LONGBLOB")
-    private String back_interior;
+    private byte[] back_interior;
     @Lob
     @Column(columnDefinition = "LONGBLOB")
-    private String license_f_img;
+    private byte[] license_f_img;
     @Lob
     @Column(columnDefinition = "LONGBLOB")
-    private String license_b_img;
+    private byte[] license_b_img;
 
 }

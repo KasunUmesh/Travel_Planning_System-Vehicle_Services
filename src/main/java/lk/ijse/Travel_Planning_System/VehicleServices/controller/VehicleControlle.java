@@ -1,6 +1,6 @@
 package lk.ijse.Travel_Planning_System.VehicleServices.controller;
 
-import jakarta.validation.Valid;
+
 import lk.ijse.Travel_Planning_System.VehicleServices.dto.VehicleDTO;
 import lk.ijse.Travel_Planning_System.VehicleServices.service.VehicleService;
 import lk.ijse.Travel_Planning_System.VehicleServices.util.ResponseUtil;
@@ -22,15 +22,10 @@ import java.util.Base64;
 public class VehicleControlle {
 
     @Autowired
-    private final VehicleService vehicleService;
+    VehicleService vehicleService;
 
-    public VehicleControlle(VehicleService vehicleService) {
-        this.vehicleService = vehicleService;
-    }
-
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(consumes =MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    VehicleDTO saveVehicle(@Valid
+    @PostMapping(consumes =MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil saveVehicle(
                            @RequestPart("brand") String brand,
                            @RequestPart("category") String category,
                            @RequestPart("vehicleType") String vehicleType,
@@ -44,77 +39,24 @@ public class VehicleControlle {
                            @RequestPart("driver_name") String driver_name,
                            @RequestPart("driver_contact") String driver_contact,
                            @RequestPart("remark") String remark,
-                           @RequestPart("side_img") MultipartFile side_img,
-                           @RequestPart("front_img") MultipartFile front_img,
-                           @RequestPart("back_img") MultipartFile back_img,
-                           @RequestPart("front_interior") MultipartFile front_interior,
-                           @RequestPart("back_interior") MultipartFile back_interior,
-                           @RequestPart("license_f_img") MultipartFile license_f_img,
-                           @RequestPart("license_b_img") MultipartFile license_b_img, Errors errors) {
+                           @RequestPart("side_img") byte[] side_img,
+                           @RequestPart("front_img") byte[] front_img,
+                           @RequestPart("back_img") byte[] back_img,
+                           @RequestPart("front_interior") byte[] front_interior,
+                           @RequestPart("back_interior") byte[] back_interior,
+                           @RequestPart("license_f_img") byte[] license_f_img,
+                           @RequestPart("license_b_img") byte[] license_b_img) {
 
 
-        String sideImgName = StringUtils.cleanPath(side_img.getOriginalFilename());
-        String frontImgName = StringUtils.cleanPath(front_img.getOriginalFilename());
-        String backImgName = StringUtils.cleanPath(back_img.getOriginalFilename());
-        String frontInteriorName = StringUtils.cleanPath(front_interior.getOriginalFilename());
-        String backInteriorName = StringUtils.cleanPath(back_interior.getOriginalFilename());
-        String licenseFname = StringUtils.cleanPath(license_f_img.getOriginalFilename());
-        String licenseBname = StringUtils.cleanPath(license_b_img.getOriginalFilename());
+        VehicleDTO vehicleDTO = new VehicleDTO( brand, category, vehicleType, fuelType,
+                is_Hybrid, fuel_Usage, is_Auto, no_of_seat, fee_for_day, fee_for_1km,
+                driver_name, driver_contact, remark, side_img, front_img, back_img,
+                front_interior, back_interior, license_f_img, license_b_img
+        );
 
-        if (sideImgName.contains("") || frontImgName.contains("") || backImgName.contains("") || frontInteriorName.contains("") || backInteriorName.contains("") || licenseFname.contains("") || licenseBname.contains("")) {
-            System.out.println("Not a valid file name");
-        }
 
-        String convertsideImg;
-        String convertfrontImg;
-        String convertbackImg;
-        String convertfrontInterior;
-        String convertbackInterior;
-        String convertlicenseF;
-        String convertLicenseB;
-
-        try {
-            convertsideImg = Base64.getEncoder().encodeToString(side_img.getBytes());
-            convertfrontImg = Base64.getEncoder().encodeToString(front_img.getBytes());
-            convertbackImg = Base64.getEncoder().encodeToString(back_img.getBytes());
-            convertfrontInterior = Base64.getEncoder().encodeToString(front_interior.getBytes());
-            convertbackInterior = Base64.getEncoder().encodeToString(back_interior.getBytes());
-            convertlicenseF = Base64.getEncoder().encodeToString(license_f_img.getBytes());
-            convertLicenseB = Base64.getEncoder().encodeToString(license_b_img.getBytes());
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (errors.hasFieldErrors()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errors.getFieldErrors().get(0).getDefaultMessage());
-
-        }
-
-        VehicleDTO vehicleDTO = new VehicleDTO();
-
-        vehicleDTO.setBrand(brand);
-        vehicleDTO.setCategory(category);
-        vehicleDTO.setVehicleType(vehicleType);
-        vehicleDTO.setFuelType(fuelType);
-        vehicleDTO.setIs_hybrid(is_Hybrid);
-        vehicleDTO.setFuel_usage(fuel_Usage);
-        vehicleDTO.setIs_auto(is_Auto);
-        vehicleDTO.setNo_of_seat(no_of_seat);
-        vehicleDTO.setFee_for_day(fee_for_day);
-        vehicleDTO.setFee_for_1km(fee_for_1km);
-        vehicleDTO.setDriver_name(driver_name);
-        vehicleDTO.setDrivel_contact(driver_contact);
-        vehicleDTO.setRemark(remark);
-        vehicleDTO.setSide_img(convertsideImg);
-        vehicleDTO.setFront_img(convertfrontImg);
-        vehicleDTO.setBack_img(convertbackImg);
-        vehicleDTO.setFront_interior(convertfrontInterior);
-        vehicleDTO.setBack_interior(convertbackInterior);
-        vehicleDTO.setLicense_f_img(convertlicenseF);
-        vehicleDTO.setLicense_b_img(convertLicenseB);
-
-        return vehicleService.saveVehicle(vehicleDTO);
+        vehicleService.saveVehicle(vehicleDTO);
+        return new ResponseUtil(200, "Success", null);
 
     }
 
