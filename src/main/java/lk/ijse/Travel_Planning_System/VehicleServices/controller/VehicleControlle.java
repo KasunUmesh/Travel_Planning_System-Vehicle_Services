@@ -3,6 +3,7 @@ package lk.ijse.Travel_Planning_System.VehicleServices.controller;
 import jakarta.validation.Valid;
 import lk.ijse.Travel_Planning_System.VehicleServices.dto.VehicleDTO;
 import lk.ijse.Travel_Planning_System.VehicleServices.service.VehicleService;
+import lk.ijse.Travel_Planning_System.VehicleServices.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,7 +29,7 @@ public class VehicleControlle {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE}, path = "/save")
+    @PostMapping(consumes =MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     VehicleDTO saveVehicle(@Valid
                            @RequestPart("brand") String brand,
                            @RequestPart("category") String category,
@@ -38,6 +39,8 @@ public class VehicleControlle {
                            @RequestPart("fuel_Usage") String fuel_Usage,
                            @RequestPart("is_auto") String is_Auto,
                            @RequestPart("no_of_seat") int no_of_seat,
+                           @RequestPart("fee_for_day") int fee_for_day,
+                           @RequestPart("fee_for_1km") int fee_for_1km,
                            @RequestPart("driver_name") String driver_name,
                            @RequestPart("driver_contact") String driver_contact,
                            @RequestPart("remark") String remark,
@@ -56,7 +59,7 @@ public class VehicleControlle {
         String frontInteriorName = StringUtils.cleanPath(front_interior.getOriginalFilename());
         String backInteriorName = StringUtils.cleanPath(back_interior.getOriginalFilename());
         String licenseFname = StringUtils.cleanPath(license_f_img.getOriginalFilename());
-        String LicenseBname = StringUtils.cleanPath(license_b_img.getOriginalFilename());
+        String licenseBname = StringUtils.cleanPath(license_b_img.getOriginalFilename());
 
         if (sideImgName.contains("") || frontImgName.contains("") || backImgName.contains("") || frontInteriorName.contains("") || backInteriorName.contains("") || licenseFname.contains("") || licenseBname.contains("")) {
             System.out.println("Not a valid file name");
@@ -98,6 +101,8 @@ public class VehicleControlle {
         vehicleDTO.setFuel_usage(fuel_Usage);
         vehicleDTO.setIs_auto(is_Auto);
         vehicleDTO.setNo_of_seat(no_of_seat);
+        vehicleDTO.setFee_for_day(fee_for_day);
+        vehicleDTO.setFee_for_1km(fee_for_1km);
         vehicleDTO.setDriver_name(driver_name);
         vehicleDTO.setDrivel_contact(driver_contact);
         vehicleDTO.setRemark(remark);
@@ -111,6 +116,11 @@ public class VehicleControlle {
 
         return vehicleService.saveVehicle(vehicleDTO);
 
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil getAllVehicle() {
+        return new ResponseUtil(200, "Get All", vehicleService.getAllVehicle());
     }
 
 }

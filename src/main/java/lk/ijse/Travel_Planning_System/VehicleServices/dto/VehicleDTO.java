@@ -32,6 +32,10 @@ public class VehicleDTO implements Serializable {
     private String is_auto;
     @NotNull(message = "No of Seat Cannot be empty")
     private int no_of_seat;
+    @NotNull(message = "fee for day Cannot be empty")
+    private int fee_for_day;
+    @NotNull(message = "fee for 1km Cannot be empty")
+    private int fee_for_1km;
     @NotNull(message = "Driver Name Cannot be empty")
     private String driver_name;
     @NotNull(message = "Drive Contact Cannot be empty")

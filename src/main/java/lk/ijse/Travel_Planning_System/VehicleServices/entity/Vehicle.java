@@ -1,6 +1,7 @@
 package lk.ijse.Travel_Planning_System.VehicleServices.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,10 @@ public class Vehicle implements SuperEntity{
     private String is_auto;
     @Column(nullable = false)
     private int no_of_seat;
+    @Column(nullable = false)
+    private int fee_for_day;
+    @Column(nullable = false)
+    private int fee_for_1km;
     @Column(nullable = false)
     private String driver_name;
     @Column(nullable = false)
